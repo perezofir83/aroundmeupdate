@@ -1,37 +1,58 @@
 location:
-  address: "El Sauzal de Rodríguez, Baja California, Mexico"
+  address: "Calle Morelos 90, esq Abelardo Rodriguez, El Sauzal, Ensenada, Mexico, 22760"
   lat: 31.9300
   lng: -116.6870
   radius_km: 50
 
 language: "es"
-brief_language: "he"
+brief_language: "es"  # Output in Spanish
+
+# Business context — used by AI to personalize the brief
+business:
+  name: "Mercado del Sauzal"
+  type: "Tienda de abarrotes y carnicería"
+  description: "Tienda familiar de abarrotes y carnicería desde 2009. Productos frescos, carne, frutas, verduras, lácteos y productos básicos del hogar."
+  location: "Calle Morelos 90, esq Abelardo Rodriguez, El Sauzal"
+  hours: "Lun-Dom 6:30am a 9:30pm"
+  customers:
+    - type: "Comunidad local"
+      description: "Vecinos del Sauzal que compran regularmente"
+    - type: "De paso"
+      description: "Viajeros y turistas que paran en la carretera"
+  interests:
+    - "Publicidad y promociones de negocios cercanos"
+    - "Tráfico vehicular en la carretera Ensenada-Tijuana"
+    - "Eventos locales que aumenten el consumo (festivales, ferias, temporadas)"
+    - "Nuevos negocios grandes entrando al área (competencia o oportunidad)"
+    - "Tendencias de consumo y precios de alimentos"
+    - "Temporadas turísticas y flujo de visitantes"
+    - "Oportunidades para atraer más clientes"
 
 categories:
-  - id: security
-    emoji: "🚨"
-    label: "ביטחון"
-    keywords_es: ["seguridad", "crimen", "violencia", "robo", "homicidio", "secuestro", "narcotráfico", "balacera", "policía", "guardia nacional", "militar"]
-  - id: politics
-    emoji: "🏛️"
-    label: "פוליטיקה"
-    keywords_es: ["gobierno", "presidente", "senado", "diputado", "elección", "política", "congreso", "reforma", "ley", "partido"]
-  - id: events
-    emoji: "🎉"
-    label: "אירועים"
-    keywords_es: ["festival", "concierto", "evento", "feria", "exposición", "cultural", "celebración", "desfile"]
-  - id: traffic
+  - id: competencia
+    emoji: "🏪"
+    label: "Competencia y Negocios"
+    keywords_es: ["empresa", "negocio", "tienda", "supermercado", "Oxxo", "Walmart", "comercio", "apertura", "promoción", "oferta", "descuento", "mercado"]
+  - id: trafico
     emoji: "🚗"
-    label: "תחבורה"
-    keywords_es: ["tráfico", "accidente", "vialidad", "metro", "transporte", "bloqueo", "obra", "carretera", "autopista"]
-  - id: business
-    emoji: "💼"
-    label: "עסקים"
-    keywords_es: ["empresa", "negocio", "inversión", "economía", "empleo", "comercio", "industria", "startup", "mercado"]
+    label: "Tráfico y Vialidad"
+    keywords_es: ["tráfico", "accidente", "carretera", "autopista", "vialidad", "bloqueo", "obra", "transporte", "Ensenada-Tijuana"]
+  - id: eventos
+    emoji: "🎉"
+    label: "Eventos y Temporadas"
+    keywords_es: ["festival", "concierto", "evento", "feria", "turismo", "vendimia", "carnaval", "Semana Santa", "vacaciones", "temporada"]
+  - id: consumo
+    emoji: "🛒"
+    label: "Consumo y Precios"
+    keywords_es: ["precio", "inflación", "canasta básica", "alimentos", "carne", "pollo", "verdura", "fruta", "leche", "economía", "consumo"]
+  - id: seguridad
+    emoji: "🚨"
+    label: "Seguridad"
+    keywords_es: ["seguridad", "crimen", "robo", "policía", "guardia nacional", "operativo", "violencia"]
   - id: general
-    emoji: "🌍"
-    label: "כללי"
-    keywords_es: ["clima", "terremoto", "salud", "educación", "medio ambiente", "sociedad"]
+    emoji: "📰"
+    label: "General"
+    keywords_es: ["gobierno", "clima", "terremoto", "salud", "educación", "sociedad"]
 
 sources:
   newsapi:

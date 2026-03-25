@@ -52,7 +52,7 @@ def run_pipeline(config: dict, deliver: bool = False, verbose: bool = True) -> s
     if not articles:
         if verbose:
             print("⚠️  No articles found from any source.")
-        return f"📋 *סיכום יומי — {today}*\n📍 {address}\n\n⚠️ לא נמצאו כתבות חדשות היום."
+        return f"📋 *Resumen Diario — {today}*\n📍 {address}\n\n⚠️ No se encontraron noticias nuevas hoy."
 
     # Step 2: Store
     if verbose:
@@ -65,30 +65,35 @@ def run_pipeline(config: dict, deliver: bool = False, verbose: bool = True) -> s
     analyzer = ArticleAnalyzer(config)
     analyzed = analyzer.analyze_batch(articles)
 
-    # Step 4: Generate brief
+    # Step 4: Generate insights
     if verbose:
-        print(f"\n📝 Step 4: Generating brief...")
-    brief = analyzer.generate_brief(analyzed)
+        print(f"\n💡 Step 4: Generating insights...")
+    insights = analyzer.generate_insights(analyzed)
 
-    # Step 5: Save to web
+    # Step 5: Generate brief
     if verbose:
-        print(f"\n🌐 Step 5: Saving to web...")
+        print(f"\n📝 Step 5: Generating brief...")
+    brief = analyzer.generate_brief(analyzed, insights)
+
+    # Step 6: Save to web
+    if verbose:
+        print(f"\n🌐 Step 6: Saving to web...")
     min_score = config.get("scoring", {}).get("min_relevance_score", 3)
     relevant_count = len([a for a in analyzed if a.get("relevance_score", 0) >= min_score])
     site_gen = SiteGenerator(config)
-    site_gen.save_brief(brief, today, address, relevant_count)
+    site_gen.save_brief(brief, today, address, relevant_count, analyzed, insights)
 
-    # Step 6: Deliver
+    # Step 7: Deliver
     if deliver:
         if verbose:
-            print(f"\n📤 Step 6: Delivering...")
+            print(f"\n📤 Step 7: Delivering...")
         method = config.get("delivery", {}).get("method", "telegram")
         if method == "telegram":
             tg = TelegramDelivery(config)
             tg.send(brief)
     else:
         if verbose:
-            print(f"\n📤 Step 6: Delivery skipped (test mode)")
+            print(f"\n📤 Step 7: Delivery skipped (test mode)")
 
     if verbose:
         print(f"\n{'='*60}")

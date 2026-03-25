@@ -9,7 +9,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(__file__))
 
 from main import load_config
-from sources.aggregator import fetch_all, store_articles, get_db
+from sources.aggregator import fetch_all, store_articles
 from analysis.analyzer import ArticleAnalyzer
 from web.site_generator import SiteGenerator
 from demo_data import get_demo_articles
@@ -22,14 +22,15 @@ def test():
     config = load_config()
     location = config.get("location", {})
     address = location.get("address", "Unknown")
+    biz_name = config.get("business", {}).get("name", "Local Brief")
     today = datetime.now().strftime("%Y-%m-%d")
 
-    print(f"\nLOCAL INTELLIGENCE BRIEF")
-    print(f"Location: {address}")
-    print(f"Date: {today}")
+    print(f"\n🏪 {biz_name}")
+    print(f"📍 {address}")
+    print(f"📅 {today}")
     print("=" * 60)
 
-    # Step 1: Try live sources, fall back to demo
+    # Step 1: Fetch
     print(f"\nStep 1: Fetching articles...")
     articles = fetch_all(config)
 
@@ -44,27 +45,30 @@ def test():
 
     # Step 3: Analyze
     print(f"\nStep 3: Analyzing articles...")
-    has_analysis = all(a.get("category") and a.get("summary_he") for a in articles)
+    analyzer = ArticleAnalyzer(config)
+    has_analysis = all(a.get("category") and a.get("summary_es") for a in articles)
     if has_analysis:
         print("  Articles already analyzed (demo mode)")
         analyzed = articles
     else:
-        analyzer = ArticleAnalyzer(config)
         analyzed = analyzer.analyze_batch(articles)
 
-    # Step 4: Generate brief
-    print(f"\nStep 4: Generating brief...")
-    analyzer = ArticleAnalyzer(config)
-    brief = analyzer.generate_brief(analyzed)
+    # Step 4: Generate insights
+    print(f"\nStep 4: Generating insights...")
+    insights = analyzer.generate_insights(analyzed)
 
-    # Step 5: Save to web
-    print(f"\nStep 5: Saving to web...")
+    # Step 5: Generate brief
+    print(f"\nStep 5: Generating brief...")
+    brief = analyzer.generate_brief(analyzed, insights)
+
+    # Step 6: Save to web
+    print(f"\nStep 6: Saving to web...")
     min_score = config.get("scoring", {}).get("min_relevance_score", 3)
     relevant_count = len([a for a in analyzed if a.get("relevance_score", 0) >= min_score])
     site_gen = SiteGenerator(config)
-    site_gen.save_brief(brief, today, address, relevant_count)
+    site_gen.save_brief(brief, today, address, relevant_count, analyzed, insights)
 
-    # Save brief to text file
+    # Save text brief
     output_path = os.path.join(os.path.dirname(__file__), "briefs", "latest_test_brief.txt")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
@@ -72,11 +76,9 @@ def test():
 
     print(f"\n{'='*60}")
     print(f"Pipeline complete!")
-    print(f"Brief saved to: {output_path}")
     print(f"Relevant articles: {relevant_count}")
     print(f"{'='*60}")
-    print(f"\nBRIEF OUTPUT:\n")
-    print(brief)
+    print(f"\n{brief}")
 
     return brief
 
