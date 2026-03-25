@@ -1,0 +1,7 @@
+.env
+*.pyc
+__pycache__/
+*.db
+*.db-journal
+briefs/*.txt
+.DS_Store

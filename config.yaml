@@ -1,0 +1,58 @@
+location:
+  address: "El Sauzal de Rodríguez, Baja California, Mexico"
+  lat: 31.9300
+  lng: -116.6870
+  radius_km: 50
+
+language: "es"
+brief_language: "he"
+
+categories:
+  - id: security
+    emoji: "🚨"
+    label: "ביטחון"
+    keywords_es: ["seguridad", "crimen", "violencia", "robo", "homicidio", "secuestro", "narcotráfico", "balacera", "policía", "guardia nacional", "militar"]
+  - id: politics
+    emoji: "🏛️"
+    label: "פוליטיקה"
+    keywords_es: ["gobierno", "presidente", "senado", "diputado", "elección", "política", "congreso", "reforma", "ley", "partido"]
+  - id: events
+    emoji: "🎉"
+    label: "אירועים"
+    keywords_es: ["festival", "concierto", "evento", "feria", "exposición", "cultural", "celebración", "desfile"]
+  - id: traffic
+    emoji: "🚗"
+    label: "תחבורה"
+    keywords_es: ["tráfico", "accidente", "vialidad", "metro", "transporte", "bloqueo", "obra", "carretera", "autopista"]
+  - id: business
+    emoji: "💼"
+    label: "עסקים"
+    keywords_es: ["empresa", "negocio", "inversión", "economía", "empleo", "comercio", "industria", "startup", "mercado"]
+  - id: general
+    emoji: "🌍"
+    label: "כללי"
+    keywords_es: ["clima", "terremoto", "salud", "educación", "medio ambiente", "sociedad"]
+
+sources:
+  newsapi:
+    enabled: true
+    page_size: 50
+  google_rss:
+    enabled: true
+    max_results: 30
+  gdelt:
+    enabled: true
+    max_records: 100
+
+delivery:
+  method: "telegram"
+  telegram_chat_id: ""
+  telegram_token: ""
+
+schedule: "0 12 * * *"
+
+scoring:
+  importance_weight: 0.7
+  recency_weight: 0.3
+  recency_half_life_hours: 24
+  min_relevance_score: 3
